@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Analysis Dashboard</title>
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <style>
+        /* Basic Styling */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header Styling */
+        header {
+            background-color: #3498db;
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Center the title */
+            height: 150px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header-container h1 {
+            font-size: 40px;
+            margin: 0;
+            text-align: center; /* Center the title */
+            color: white;
+        }
+
+        /* Section Title */
+        .section-title {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-top: 50px;
+            margin-bottom: 30px;
+            padding: 0 20px;
+        }
+
+        /* Dashboard Cards Section */
+        .dashboard-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            padding: 20px;
+            padding-bottom: 50px;
+        }
+
+        /* Card Styling */
+        .card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 15px;
+            width: 23%;
+            height: 250px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: linear-gradient(135deg, #f8f8f8, #ffffff);
+        }
+
+        /* Card Hover Effect */
+        .card:hover {
+            background-color: #ecf0f1;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Icon Styling */
+        .card i {
+            font-size: 50px;
+            color: #3498db;
+            margin-bottom: 20px;
+        }
+
+        /* Card Heading */
+        .card h3 {
+            color: #3498db;
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        /* Card Description */
+        .card p {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        /* Link Styling */
+        .card a {
+            color: #3498db;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: auto;
+        }
+
+        /* Footer Styling */
+        footer {
+            background-color: #3498db;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            font-size: 14px;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        /* Social Media Icons */
+        footer .social-icons {
+            margin-top: 10px;
+        }
+
+        footer .social-icons a {
+            color: white;
+            font-size: 20px;
+            margin: 0 10px;
+        }
+
+        footer .social-icons a:hover {
+            color: #f39c12;
+        }
+
+        /* Responsive Design for Small Screens */
+        @media (max-width: 768px) {
+            .card {
+                width: 100%;
+            }
+
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <h1>Sentiment Analysis Dashboard</h1>
+        </div>
+        <!-- Image placed to the right of the title -->
+        <img src="{{ url_for('static', filename='images/undraw_sentiment-analysis_ulaf.svg') }}" alt="Sentiment Analysis" style="max-width: 100px; height: auto; margin-right: -10px; margin-left: 10px;"/>
+    </header>
+
+    <!-- Section Title -->
+    <div class="section-title">
+        ANALISIS SENTIMEN MEDIA SOSIAL INSTAGRAM DAN TWITTER KLUB MANCHESTER UNITED MENGGUNAKAN METODE NAIVE BAYES CLASSIFIER
+    </div>
+
+    <!-- Dashboard Cards Section -->
+    <div class="dashboard-container">
+        <!-- Prediksi Card -->
+        <div class="card">
+            <i class="fas fa-chart-line"></i>
+            <h3>Prediksi Sentimen</h3>
+            <p>Analisis komentar Anda untuk mengetahui sentimennya.</p>
+            <a href="/predict">Mulai Prediksi</a>
+        </div>
+
+        <!-- Akurasi Model Card -->
+        <div class="card">
+            <i class="fas fa-tachometer-alt"></i>
+            <h3>Akurasi Model</h3>
+            <p>Melihat akurasi model berdasarkan data uji.</p>
+            <a href="/accuracy">Lihat Akurasi</a>
+        </div>
+
+        <!-- Proses Pengolahan Teks Card -->
+        <div class="card">
+            <i class="fas fa-cogs"></i>
+            <h3>Proses Pengolahan Teks</h3>
+            <p>Masukkan teks untuk analisis sentimen lebih mendalam melalui proses pengolahan teks.</p>
+            <a href="/preprocessing">Mulai Proses Pengolahan</a>
+        </div>
+
+        <!-- Visualisasi Sentimen Card -->
+        <div class="card">
+            <i class="fas fa-chart-bar"></i>
+            <h3>Visualisasi Sentimen</h3>
+            <p>Melihat visualisasi grafik sentimen.</p>
+            <a href="/visualization">Lihat Visualisasi</a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Sentiment Analysis App. All rights reserved.</p>
+        <div class="social-icons">
+            <a href="#" class="fab fa-instagram"></a>
+            <a href="#" class="fab fa-twitter"></a>
+            <a href="#" class="fab fa-linkedin"></a>
+        </div>
+    </footer>
+
+</body>
+</html>

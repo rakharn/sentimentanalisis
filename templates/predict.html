@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediksi Sentimen</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <style>
+        /* Basic Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header Styling */
+header {
+    background-color: #3498db;
+    color: white;
+    padding: 40px 20px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative; /* Positioning for absolute elements */
+}
+
+    /* Back Button Styling */
+    .back-button {
+        font-size: 35px;
+        text-decoration: none;
+        margin-left: 20px;
+        position: absolute;
+        left: 20px; /* Positioning from the left side */
+        top: 40%; /* Center vertically */
+        transform: translateY(-50%); /* Perfectly center it */
+        font-weight: bold;
+        color: white;
+        padding: 0 20px;
+    }
+
+
+        .header-container h1 {
+            font-size: 40px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        /* Predict Section */
+        .predict-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 50px;
+            padding: 20px;
+            flex-wrap: wrap;
+        }
+
+        /* Image Styling */
+        .predict-image {
+            width: 350px;
+            max-width: 100%;
+            object-fit: contain;
+        }
+
+        <!-- Prediction Form -->
+        <div class="predict-form">
+            <form action="/predict" method="post">
+                <label for="platform">Pilih Platform</label>
+                <select name="platform" id="platform">
+                    <option value="Instagram" {% if request.form.platform == 'Instagram' %} selected {% endif %}>Instagram</option>
+                    <option value="Twitter" {% if request.form.platform == 'Twitter' %} selected {% endif %}>Twitter</option>
+                </select>
+                <label for="comment">Masukkan Komentar</label>
+                <textarea id="comment" name="comment" rows="4" placeholder="Masukkan komentar untuk analisis sentimen">{{ request.form.comment }}</textarea>
+                <button type="submit">Prediksi</button>
+            </form>
+        </div>
+        
+
+        .predict-form label {
+            font-size: 16px;
+            color: #3498db;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .predict-form select,
+        .predict-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border: 1px solid #3498db;
+        }
+
+        .predict-form button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .predict-form button:hover {
+            background-color: #2980b9;
+        }
+
+        /* Prediction Result */
+        .prediction-result {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        /* Footer Styling */
+        footer {
+            background-color: #3498db;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            font-size: 14px; /* Smaller font size for footer */
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        /* Social Media Icons */
+        footer .social-icons {
+            margin-top: 10px;
+        }
+
+        footer .social-icons a {
+            color: white;
+            font-size: 20px;
+            margin: 0 10px;
+        }
+
+        footer .social-icons a:hover {
+            color: #f39c12; /* Hover effect for social icons */
+        }
+
+        /* Responsive Design for Small Screens */
+        @media (max-width: 768px) {
+            .card {
+                width: 100%;  /* Make cards full width on smaller screens */
+            }
+
+            header {
+                flex-direction: column; /* Stack header elements vertically */
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+        <!-- Back Button Styling -->
+<a href="/" class="back-button">
+    <i class="fas fa-arrow-left"></i>
+</a>
+
+        
+            <h1>Prediksi Sentimen</h1>
+        </div>
+    </header>
+
+    <!-- Predict Section -->
+    <div class="predict-container">
+        <!-- Image Illustration -->
+        <img src="{{ url_for('static', filename='images/undraw_social-media_vxq0.svg') }}" alt="Social Media" class="predict-image">
+
+        <!-- Prediction Form -->
+<div class="predict-form">
+    <form action="/predict" method="post">
+        <label for="platform">Pilih Platform</label>
+        <select name="platform" id="platform">
+            <option value="Instagram" {% if request.form.platform == 'Instagram' %} selected {% endif %}>Instagram</option>
+            <option value="Twitter" {% if request.form.platform == 'Twitter' %} selected {% endif %}>Twitter</option>
+        </select>
+        <label for="comment">Masukkan Komentar</label>
+        <textarea id="comment" name="comment" rows="4" placeholder="Masukkan komentar untuk analisis sentimen">{{ request.form.comment }}</textarea>
+        <button type="submit">Prediksi</button>
+    </form>
+    
+    {% if error_message %}
+        <div class="error-message" style="color: red; font-size: 14px; margin-top: 10px;">
+            {{ error_message }}
+        </div>
+    {% endif %}
+</div>
+
+    </div>
+
+    <!-- Prediction Result -->
+    <div class="prediction-result">
+        {% if result %}
+            <p>Hasil sentimen dari "<strong>{{ request.form['comment'] }}</strong>" adalah <strong>{{ result }}</strong>.</p>
+        {% else %}
+            <p>Silakan masukkan komentar dan pilih platform untuk mendapatkan prediksi sentimen.</p>
+        {% endif %}
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Sentiment Analysis App. All rights reserved.</p>
+        <div class="social-icons">
+            <a href="#" class="fab fa-instagram"></a>
+            <a href="#" class="fab fa-twitter"></a>
+            <a href="#" class="fab fa-linkedin"></a>
+        </div>
+    </footer>
+
+</body>
+</html>

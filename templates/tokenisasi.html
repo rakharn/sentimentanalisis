@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proses Tokenisasi</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Back Button -->
+        <a href="/" class="back-button"><i class="fas fa-arrow-left"></i> Kembali ke Dashboard</a>
+
+        <header>
+            <h1>Proses Tokenisasi</h1>
+        </header>
+
+        <!-- Form untuk memilih platform dan menampilkan data tokenisasi -->
+        <form action="/tokenisasi" method="POST">
+            <label for="platform">Pilih Platform:</label>
+            <select name="platform" id="platform">
+                <option value="Instagram">Instagram</option>
+                <option value="Twitter">Twitter</option>
+            </select>
+
+            <button type="submit">Tampilkan Data Tokenisasi</button>
+        </form>
+
+        <!-- Menampilkan hasil tokenisasi -->
+        {% if result %}
+        <div class="result-box">
+            <h3>Before Tokenisasi:</h3>
+            <table>
+                <tr>
+                    <th>No</th>
+                    <th>Data</th>
+                </tr>
+                {% for index, row in result['before'].items() %}
+                <tr>
+                    <td>{{ index }}</td>
+                    <td>{{ row }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+
+            <h3>After Tokenisasi:</h3>
+            <table>
+                <tr>
+                    <th>No</th>
+                    <th>Data</th>
+                </tr>
+                {% for index, row in result['after'].items() %}
+                <tr>
+                    <td>{{ index }}</td>
+                    <td>{{ row }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        {% endif %}
+
+        <footer>
+            <p>&copy; 2025 Sentiment Analysis App. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>

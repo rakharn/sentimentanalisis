@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proses Pengolahan Teks</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* Basic Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* Header Styling */
+        header {
+            background-color: #3498db;
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            width: 100%;
+        }
+        
+        .header-container h1 {
+            font-size: 40px;
+            margin-bottom: 10px;
+            color: white;
+        }
+        
+        /* Back Button Styling */
+        .back-button {
+            font-size: 35px;
+            text-decoration: none;
+            font-weight: bold;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            position: absolute;
+            left: 20px;
+            top: 40%;
+            transform: translateY(-50%);
+        }
+        
+        .back-button i {
+            margin-right: 8px;
+        }
+        
+        /* Centering the entire content (removing flex from body) */
+        .main-content {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            flex-direction: column;
+            margin: 0 20px;
+            height: auto;
+        }
+        
+        /* Form */
+        form {
+            margin: 20px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        form label {
+            font-size: 16px;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        form select {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+        }
+        
+        form button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+        
+        form button:hover {
+            background-color: #2980b9;
+        }
+        
+        /* Result Box */
+        .result-box {
+            margin: 20px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            
+            /* Flexbox untuk memusatkan konten di dalam result-box */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;  /* Center content vertically */
+            align-items: center;  /* Center content horizontally */
+            width: 100%;
+            max-width: 1650px;  /* Menambahkan batas lebar maksimal jika diperlukan */
+            margin-left: auto;
+            margin-right: auto;  /* Memastikan box terpusat */
+        }
+        
+        
+        .result-box h2, .result-box h3 {
+            font-size: 20px;
+            color: #3498db;
+            margin-bottom: 10px;
+        }
+        
+        /* Styling untuk menampilkan tabel berdampingan dan di tengah */
+        .table-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .table-box {
+            width: 48%;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        table {
+            width: 100%;
+            margin-bottom: 20px;
+            border-collapse: collapse;
+        }
+        
+        table th, table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        
+        table th {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        button {
+            margin-top: 10px;
+            width: 100%;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        /* Footer Styling */
+        footer {
+            background-color: #3498db;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            font-size: 14px;
+        }
+        
+        footer p {
+            margin: 0;
+        }
+        
+        footer .social-icons {
+            margin-top: 10px;
+        }
+        
+        footer .social-icons a {
+            color: white;
+            font-size: 20px;
+            margin: 0 10px;
+        }
+        
+        footer .social-icons a:hover {
+            color: #f39c12;
+        }
+        
+        /* Responsive Design for Small Screens */
+        @media (max-width: 768px) {
+            .table-container {
+                flex-direction: column;
+                align-items: center;
+            }
+        
+            .table-box {
+                width: 90%;
+                margin-bottom: 20px;
+            }
+        
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    
+    </style>    
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <a href="/" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <h1>Proses Pengolahan Teks</h1>
+        </div>
+    </header>
+
+    <form action="{{ url_for('preprocessing') }}" method="POST">
+        <label for="platform">Pilih Platform:</label>
+        <select name="platform" id="platform">
+            <option value="Instagram" {% if platform == 'Instagram' %}selected{% endif %}>Instagram</option>
+            <option value="Twitter" {% if platform == 'Twitter' %}selected{% endif %}>Twitter</option>
+        </select>
+    
+        <label for="process_type">Pilih Proses Pengolahan Teks:</label>
+        <select name="process_type" id="process_type">
+            <option value="Normalisasi" {% if process_type == 'Normalisasi' %}selected{% endif %}>Normalisasi</option>
+            <option value="Tokenisasi" {% if process_type == 'Tokenisasi' %}selected{% endif %}>Tokenisasi</option>
+            <option value="Stopword" {% if process_type == 'Stopword' %}selected{% endif %}>Stopword Removal</option>
+            <option value="Stemming" {% if process_type == 'Stemming' %}selected{% endif %}>Stemming</option>
+        </select>
+    
+        <label for="per_page">Tampilkan Per Halaman:</label>
+        <select name="per_page" id="per_page" onchange="this.form.submit()">
+            <option value="10" {% if per_page == 10 %}selected{% endif %}>10</option>
+            <option value="20" {% if per_page == 20 %}selected{% endif %}>20</option>
+            <option value="50" {% if per_page == 50 %}selected{% endif %}>50</option>
+            <option value="100" {% if per_page == 100 %}selected{% endif %}>100</option>
+        </select>
+    
+        <button type="submit">Tampilkan Data</button>
+    </form>
+    
+    {% if error %}
+        <div class="error">
+            <p>{{ error }}</p>
+        </div>
+    {% endif %}
+
+    {% if result %}
+    <div class="result-box">
+        <h2>Hasil Pengolahan Teks untuk {{ process_type }}:</h2>
+
+        <div class="table-container">
+            <div class="table-box">
+                <h3>Before {{ process_type }}:</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Data</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for index, row in result['before'].items() %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ row }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-box">
+                <h3>After {{ process_type }}:</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Data</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for index, row in result['after'].items() %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ row }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <p>No data available for the selected process type.</p>
+    {% endif %}
+
+    <footer>
+        <p>&copy; 2025 Sentiment Analysis App. All rights reserved.</p>
+        <div class="social-icons">
+            <a href="#" class="fab fa-instagram"></a>
+            <a href="#" class="fab fa-twitter"></a>
+            <a href="#" class="fab fa-linkedin"></a>
+        </div>
+    </footer>
+</body>
+</html>
