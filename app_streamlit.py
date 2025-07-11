@@ -11,10 +11,15 @@ from sklearn.metrics import accuracy_score, classification_report, confusion_mat
 instagram_model_unbalanced = joblib.load('models/unbalancing/instagram_model.joblib')
 instagram_vectorizer_unbalanced = joblib.load('models/unbalancing/instagram_vectorizer.joblib')
 instagram_selector_unbalanced = joblib.load('models/unbalancing/instagram_selector.joblib')
-
+twitter_model_unbalanced = joblib.load('models/unbalancing/twitter_model.joblib')
+twitter_vectorizer_unbalanced = joblib.load('models/unbalancing/twitter_vectorizer.joblib')
+twitter_selector_unbalanced = joblib.load('models/unbalancing/twitter_selector.joblib')
 instagram_model_balanced = joblib.load('models/balancing/instagram_model.joblib')
 instagram_vectorizer_balanced = joblib.load('models/balancing/instagram_vectorizer.joblib')
 instagram_selector_balanced = joblib.load('models/balancing/instagram_selector.joblib')
+twitter_model_balanced = joblib.load('models/balancing/twitter_model.joblib')
+twitter_vectorizer_balanced = joblib.load('models/balancing/twitter_vectorizer.joblib')
+twitter_selector_balanced = joblib.load('models/balancing/twitter_selector.joblib')
 
 # ===== Prediction Function =====
 def predict_sentiment(comment, model, vectorizer, selector):
