@@ -17,21 +17,21 @@ import numpy as np
 app = Flask(__name__)
 
 # Load models, vectorizers, and selectors for both balanced and unbalanced
-instagram_model_unbalanced = joblib.load('models/unbalancing/Instagram_model (1).joblib')
-instagram_vectorizer_unbalanced = joblib.load('models/unbalancing/Instagram_vectorizer (1).joblib')
-instagram_selector_unbalanced = joblib.load('models/unbalancing/Instagram_selector (1).joblib')
+instagram_model_unbalanced = joblib.load('models/unbalancing/instagram_model.joblib')
+instagram_vectorizer_unbalanced = joblib.load('models/unbalancing/instagram_vectorizer.joblib')
+instagram_selector_unbalanced = joblib.load('models/unbalancing/instagram_selector.joblib')
 
-instagram_model_balanced = joblib.load('models/balancing/Instagram_model (2).joblib')
-instagram_vectorizer_balanced = joblib.load('models/balancing/Instagram_vectorizer (2).joblib')
-instagram_selector_balanced = joblib.load('models/balancing/Instagram_selector (2).joblib')
+instagram_model_balanced = joblib.load('models/balancing/instagram_model.joblib')
+instagram_vectorizer_balanced = joblib.load('models/balancing/instagram_vectorizer.joblib')
+instagram_selector_balanced = joblib.load('models/balancing/instagram_selector.joblib')
 
-twitter_model_unbalanced = joblib.load('models/unbalancing/Twitter_model (1).joblib')
-twitter_vectorizer_unbalanced = joblib.load('models/unbalancing/Twitter_vectorizer (1).joblib')
-twitter_selector_unbalanced = joblib.load('models/unbalancing/Twitter_selector (1).joblib')
+twitter_model_unbalanced = joblib.load('models/unbalancing/twitter_model.joblib')
+twitter_vectorizer_unbalanced = joblib.load('models/unbalancing/twitter_vectorizer.joblib')
+twitter_selector_unbalanced = joblib.load('models/unbalancing/twitter_selector.joblib')
 
-twitter_model_balanced = joblib.load('models/balancing/Twitter_model (2).joblib')
-twitter_vectorizer_balanced = joblib.load('models/balancing/Twitter_vectorizer (2).joblib')
-twitter_selector_balanced = joblib.load('models/balancing/Twitter_selector (2).joblib')
+twitter_model_balanced = joblib.load('models/balancing/twitter_model.joblib')
+twitter_vectorizer_balanced = joblib.load('models/balancing/twitter_vectorizer.joblib')
+twitter_selector_balanced = joblib.load('models/balancing/twitter_selector.joblib')
 
 # Function to preprocess and predict sentiment for Instagram
 def predict_instagram_comment(comment, balanced=False):
