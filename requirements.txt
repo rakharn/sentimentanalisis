@@ -7,3 +7,4 @@ wordcloud
 joblib
 numpy
 gunicorn
+streamlit
