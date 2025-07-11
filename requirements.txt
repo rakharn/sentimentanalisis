@@ -1,3 +1,9 @@
-Flask==2.1.0
-scikit-learn==1.2.2
-joblib==1.1.0
+flask
+pandas
+matplotlib
+scikit-learn
+nltk
+wordcloud
+joblib
+numpy
+gunicorn
