@@ -4,19 +4,25 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from wordcloud import WordCloud
-import io
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+
+# ===== Manual Label Mapping =====
+index_to_label = {0: 'positif', 1: 'negatif', 2: 'netral'}
+label_to_index = {v: k for k, v in index_to_label.items()}
 
 # ===== Load All Models & Data =====
 instagram_model_unbalanced = joblib.load('models/unbalancing/instagram_model.joblib')
 instagram_vectorizer_unbalanced = joblib.load('models/unbalancing/instagram_vectorizer.joblib')
 instagram_selector_unbalanced = joblib.load('models/unbalancing/instagram_selector.joblib')
+
 twitter_model_unbalanced = joblib.load('models/unbalancing/twitter_model.joblib')
 twitter_vectorizer_unbalanced = joblib.load('models/unbalancing/twitter_vectorizer.joblib')
 twitter_selector_unbalanced = joblib.load('models/unbalancing/twitter_selector.joblib')
+
 instagram_model_balanced = joblib.load('models/balancing/instagram_model.joblib')
 instagram_vectorizer_balanced = joblib.load('models/balancing/instagram_vectorizer.joblib')
 instagram_selector_balanced = joblib.load('models/balancing/instagram_selector.joblib')
+
 twitter_model_balanced = joblib.load('models/balancing/twitter_model.joblib')
 twitter_vectorizer_balanced = joblib.load('models/balancing/twitter_vectorizer.joblib')
 twitter_selector_balanced = joblib.load('models/balancing/twitter_selector.joblib')
@@ -26,7 +32,7 @@ def predict_sentiment(comment, model, vectorizer, selector):
     vect = vectorizer.transform([comment])
     selected = selector.transform(vect)
     pred = model.predict(selected)
-    return pred[0]
+    return index_to_label.get(pred[0], 'unknown')  # Convert angka ke label
 
 # ===== Sidebar =====
 st.sidebar.title("Navigation")
@@ -55,8 +61,12 @@ elif menu == "Prediction":
                 else:
                     result = predict_sentiment(comment, instagram_model_unbalanced, instagram_vectorizer_unbalanced, instagram_selector_unbalanced)
                 st.success(f"Predicted Sentiment: {result}")
-            else:
-                st.warning("Twitter models not available in this version.")
+            elif platform == "Twitter":
+                if balanced:
+                    result = predict_sentiment(comment, twitter_model_balanced, twitter_vectorizer_balanced, twitter_selector_balanced)
+                else:
+                    result = predict_sentiment(comment, twitter_model_unbalanced, twitter_vectorizer_unbalanced, twitter_selector_unbalanced)
+                st.success(f"Predicted Sentiment: {result}")
 
 # ===== Accuracy Page =====
 elif menu == "Accuracy":
@@ -65,7 +75,8 @@ elif menu == "Accuracy":
     df_test = pd.read_csv('data/unbalancing/instagram/testing_data.csv')
     vect = instagram_vectorizer_unbalanced.transform(df_test['preprocessing_comment'])
     selected = instagram_selector_unbalanced.transform(vect)
-    preds = instagram_model_unbalanced.predict(selected)
+    preds_num = instagram_model_unbalanced.predict(selected)
+    preds = [index_to_label.get(p, 'unknown') for p in preds_num]  # Convert angka ke label
 
     acc = accuracy_score(df_test['Sentiment'], preds)
     st.write(f"Accuracy: {acc * 100:.2f}%")
